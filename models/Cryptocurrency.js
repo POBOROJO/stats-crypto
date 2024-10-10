@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const cryptoSchema = new mongoose.Schema({
+export const cryptoSchema = new mongoose.Schema({
   coinId: {
     type: Strimg,
     required: true,
@@ -20,6 +20,8 @@ const cryptoSchema = new mongoose.Schema({
   },
   timestamp: {
     type: Date,
-    required: true,
+    default: Date.now(),
   },
 });
+
+export default mongoose.model("Cryptocurrency", cryptoSchema);

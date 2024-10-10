@@ -67,3 +67,5 @@ router.get("/deviation", async (req, res) => {
     });
   }
 });
+
+export default router;

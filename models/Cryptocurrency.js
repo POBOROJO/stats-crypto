@@ -7,7 +7,7 @@ export const cryptoSchema = new mongoose.Schema({
     enum: ["bitcoin", "ethereum", "matic-network"],
   },
   price: {
-    type: String,
+    type: Number,
     required: true,
   },
   marketCap: {

@@ -1,12 +1,12 @@
 import express from "express";
-import Cryptocurrency from "../models/Cryptocurrency";
+import Cryptocurrency from "../models/Cryptocurrency.js";
 const router = express.Router();
 
 router.get("/stats", async (req, res) => {
   try {
     const { coin } = req.query;
     if (!coin) {
-      res.status(400).json({
+      return res.status(400).json({
         msg: "Coin parameter is required",
       });
     }
@@ -16,7 +16,7 @@ router.get("/stats", async (req, res) => {
     });
 
     if (!latestData) {
-      res.status(404).json({
+      return res.status(404).json({
         msg: "Coin not found",
       });
     }
@@ -24,7 +24,7 @@ router.get("/stats", async (req, res) => {
     res.status(200).json({
       price: latestData.price,
       marketCap: latestData.marketCap,
-      change24: latesData.change24h,
+      change24: latestData.change24h,
     });
   } catch (error) {
     res.status(500).json({
@@ -46,7 +46,7 @@ router.get("/deviation", async (req, res) => {
       .limit(100);
 
     if (data.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         msg: "Coin not found",
       });
     }

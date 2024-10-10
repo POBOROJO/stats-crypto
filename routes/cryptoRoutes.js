@@ -24,7 +24,7 @@ router.get("/stats", async (req, res) => {
     res.status(200).json({
       price: latestData.price,
       marketCap: latestData.marketCap,
-      change24: latesData.change24,
+      change24: latesData.change24h,
     });
   } catch (error) {
     res.status(500).json({
@@ -55,11 +55,11 @@ router.get("/deviation", async (req, res) => {
     const mean = prices.reduce((sum, price) => sum + price, 0) / prices.length;
     const squareDiff = prices.map((price) => Math.pow(price - mean, 2));
     const variance =
-      sqDifferences.reduce((sum, diff) => sum + diff, 0) / prices.length;
+      squareDiff.reduce((sum, diff) => sum + diff, 0) / prices.length;
     const standardDeviation = Math.sqrt(variance);
 
     res.status(200).json({
-      deviation: parseFloat(standardDeviation).toFixed(2),
+      deviation: parseFloat(standardDeviation.toFixed(2)),
     });
   } catch (error) {
     res.status(500).json({

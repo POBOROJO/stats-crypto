@@ -1,23 +1,23 @@
 import axios from "axios";
 import Cryptocurrency from "../models/Cryptocurrency";
 
-const COIN_ID = ["bitcoin", "matic-network", "ethereum"];
+const coin_id = ["bitcoin", "matic-network", "ethereum"];
 
 export const fetchCryptoData = async () => {
   try {
     const url = "https://api.coingecko.com/api/v3/simple/price";
     const response = await axios.get(url, {
       params: {
-        ids: COIN_ID.join(","),
+        ids: coin_id.join(","),
         vs_currencies: "usd",
         include_market_cap: true,
         include_24hr_change: true,
       },
     });
-    for (const coinId of COIN_ID) {
+    for (const coinId of coin_id) {
       const data = response.data[coinId];
       await Cryptocurrency.create({
-        coindId,
+        coinId,
         price: data.usd,
         marketCap: data.market_cap,
         change24h: data.usd_24h_change,

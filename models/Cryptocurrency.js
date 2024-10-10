@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 export const cryptoSchema = new mongoose.Schema({
   coinId: {
-    type: Strimg,
+    type: String,
     required: true,
-    enum: ["bitcoin", "etherem", "matic-network"],
+    enum: ["bitcoin", "ethereum", "matic-network"],
   },
   price: {
     type: String,
@@ -14,7 +14,7 @@ export const cryptoSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  "24hChange": {
+  change24h: {
     type: Number,
     required: true,
   },

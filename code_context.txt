@@ -1,6 +1,6 @@
+// File: routes/cryptoRoutes.js
 import express from "express";
 import Cryptocurrency from "../models/Cryptocurrency.js";
-import fetchCryptoData from "../services/fetchCryptoData.js";
 const router = express.Router();
 
 router.get("/stats", async (req, res) => {
@@ -69,17 +69,58 @@ router.get("/deviation", async (req, res) => {
   }
 });
 
-router.post("/fetch-crypto", async (req, res) => {
-  try {
-    await fetchCryptoData();
-    res.status(200).json({
-      msg: "Crypto data fetched and stored successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      msg: "Error fetching crypto data",
-    });
-  }
+export default router;
+
+// File: models/Cryptocurrency.js
+import mongoose from "mongoose";
+
+export const cryptoSchema = new mongoose.Schema({
+  coinId: {
+    type: String,
+    required: true,
+    enum: ["bitcoin", "ethereum", "matic-network"],
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  marketCap: {
+    type: Number,
+    required: true,
+  },
+  change24h: {
+    type: Number,
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-export default router;
+export default mongoose.model("Cryptocurrency", cryptoSchema);
+
+// File: config/db.js
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: "../config/.env",
+});
+
+export const connectDB = async () => {
+  try {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("Please set the MONGODB_URI environment variable");
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("Database connected successfully");
+  } catch (error) {
+    console.error("Conection error:", error);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
+
